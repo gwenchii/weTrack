@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../login_page.dart';
+//import '../login_page.dart';
+import 'home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
+        //MaterialPageRoute(builder: (context) => const LoginPage()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     });
   }
