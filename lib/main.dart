@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'splash_screen.dart';
+import '../app/app_routes.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -10,10 +14,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(fontFamily: 'Fredoka'),
-      home: const SplashScreen(),
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
+      initialRoute: AppRoutes.splash, // Set the initial route
+      onGenerateRoute: AppRoutes.generateRoute, // Use the route generator
     );
   }
 }

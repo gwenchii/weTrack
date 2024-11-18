@@ -1,0 +1,97 @@
+// ignore_for_file: unused_import
+import 'package:flutter/material.dart';
+
+//auth
+import 'package:wetrack/screens/auth/change_password.dart';
+import 'package:wetrack/screens/auth/login_page.dart';
+import 'package:wetrack/screens/auth/signup_page.dart';
+//calculator
+import 'package:wetrack/screens/calculator/compound_interest.dart';
+import 'package:wetrack/screens/calculator/simple_interest.dart';
+import 'package:wetrack/screens/calculator/terms.dart';
+import 'package:wetrack/screens/calculator/rates.dart';
+//home
+import 'package:wetrack/screens/home/dashboard_page.dart';
+import 'package:wetrack/screens/home/home_page.dart';
+//loan
+import 'package:wetrack/screens/loan/createborrower_page.dart';
+import 'package:wetrack/screens/loan/createloan_page.dart';
+import 'package:wetrack/screens/loan/scanqr_page.dart';
+//profile
+import 'package:wetrack/screens/profile/contact_us.dart';
+import 'package:wetrack/screens/profile/notification_page.dart';
+import 'package:wetrack/screens/profile/privacy_policy.dart';
+import 'package:wetrack/screens/profile/terms_condition.dart';
+import 'package:wetrack/screens/profile/userprofile_page.dart';
+//splash
+import 'package:wetrack/screens/splash/splash_screen.dart';
+
+class AppRoutes {
+  // defining constant route names for easy declaration
+  static const String splash = '/splash';
+  static const String login = '/login';
+  static const String signup = '/signup';
+  static const String changePass = '/change-password';
+  static const String home = '/home';
+  static const String dashboard = '/dashboard';
+  static const String simpleInterest = '/calculator/simple-interest';
+  static const String compoundInterest = '/calculator/compound-interest';
+  static const String paymentTerms = '/calculator/payment-terms';
+  static const String rates = '/calculator/rates';
+  static const String createLoan = '/create-loan';
+  static const String createBorrower = '/create-borrower';
+  static const String qrScan = '/qr-scan';
+  static const String profile = '/profile';
+  static const String notifications = '/notifications';
+  static const String termsAndConditions = '/terms-and-conditions';
+  static const String privacyPolicy = '/privacy-policy';
+  static const String contactUs = '/contact-us';
+
+  // Route generator for dynamic navigation
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case splash:
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case login:
+        return MaterialPageRoute(builder: (_) => const LoginPage());
+      case signup:
+        return MaterialPageRoute(builder: (_) => const SignupPage());
+      case changePass:
+        return MaterialPageRoute(builder: (_) => const ChangePassword());
+      case home:
+        return MaterialPageRoute(builder: (_) => const HomePage());
+      case dashboard:
+        return MaterialPageRoute(builder: (_) => const DashboardPage());
+      case simpleInterest:
+        return MaterialPageRoute(builder: (_) => const SimpleInterest());
+      case compoundInterest:
+        return MaterialPageRoute(builder: (_) => const CompoundInterest());
+      case rates:
+        return MaterialPageRoute(builder: (_) => const Rates());
+      case paymentTerms:
+        return MaterialPageRoute(builder: (_) => const TermsPage());
+      case createLoan:
+        return MaterialPageRoute(builder: (_) => const CreateloanPage());
+      case createBorrower:
+        return MaterialPageRoute(builder: (_) => const CreateborrowerPage());
+      case qrScan:
+        return MaterialPageRoute(builder: (_) => const QRScanPage());
+      case profile:
+        return MaterialPageRoute(builder: (_) => const ProfilePage());
+      case notifications:
+        return MaterialPageRoute(builder: (_) => const NotificationPage());
+      case termsAndConditions:
+        return MaterialPageRoute(builder: (_) => const TermnsandCondition());
+      case privacyPolicy:
+        return MaterialPageRoute(builder: (_) => const PrivacyPolicyPage());
+      case contactUs:
+        return MaterialPageRoute(builder: (_) => const ContactUsPage());
+      default:
+        return MaterialPageRoute(
+          builder: (_) => Scaffold(
+            body: Center(child: Text('No route defined for ${settings.name}')),
+          ),
+        );
+    }
+  }
+}
