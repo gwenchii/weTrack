@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:wetrack/app/app_theme.dart';
-import 'package:wetrack/screens/home/home_page.dart';
-//import '../login_page.dart';
+import 'package:wetrack/screens/auth/login_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -27,23 +26,23 @@ class _SplashScreenState extends State<SplashScreen> {
 
         Timer(const Duration(seconds: 3), () {
           if (!skip) {
-            _toHomePage();
+            _toLoginPage();
           }
         });
       }
     });
   }
 
-  void _toHomePage() {
+  void _toLoginPage() {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
   void _skip() {
     setState(() {
       skip = true;
     });
-    _toHomePage();
+    _toLoginPage();
   }
 
   @override
