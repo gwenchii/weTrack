@@ -1,10 +1,12 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, constant_identifier_names
 import 'package:flutter/material.dart';
 
 //auth
 import 'package:wetrack/screens/auth/change_password.dart';
 import 'package:wetrack/screens/auth/login_page.dart';
 import 'package:wetrack/screens/auth/signup_page.dart';
+import 'package:wetrack/screens/auth/forgot_password.dart';
+
 //calculator
 import 'package:wetrack/screens/calculator/compound_interest.dart';
 import 'package:wetrack/screens/calculator/simple_interest.dart';
@@ -32,6 +34,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String signup = '/signup';
   static const String changePass = '/change-password';
+  static const String resetPass = '/reset-password';
   static const String home = '/home';
   static const String dashboard = '/dashboard';
   static const String simpleInterest = '/calculator/simple-interest';
@@ -58,6 +61,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const SignupPage());
       case changePass:
         return MaterialPageRoute(builder: (_) => const ChangePassword());
+      case resetPass:
+        return MaterialPageRoute(builder: (_) => const ResetPassword());
       case home:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case dashboard:
