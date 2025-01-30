@@ -14,10 +14,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.splash, // Set the initial route
       onGenerateRoute: AppRoutes.generateRoute, // Use the route generator
+      theme: ThemeData(
+        fontFamily: 'Fredoka', // Apply Fredoka font globally
+        primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(fontFamily: 'Fredoka'),
+          bodyMedium: TextStyle(fontFamily: 'Fredoka'),
+          displayLarge: TextStyle(fontFamily: 'Fredoka'),
+          displayMedium: TextStyle(fontFamily: 'Fredoka'),
+        ),
+      ),
     );
   }
 }

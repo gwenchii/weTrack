@@ -27,6 +27,13 @@ import 'package:wetrack/screens/profile/terms_condition.dart';
 import 'package:wetrack/screens/profile/userprofile_page.dart';
 //splash
 import 'package:wetrack/screens/splash/splash_screen.dart';
+//widget
+import 'package:wetrack/widgets/navigation_bar.dart';
+//models
+import 'package:wetrack/models/loan_model.dart';
+import 'package:wetrack/models/borrower_model.dart';
+import 'package:wetrack/models/notification_model.dart';
+import 'package:wetrack/models/payment_term.dart';
 
 class AppRoutes {
   // defining constant route names for easy declaration
@@ -76,9 +83,9 @@ class AppRoutes {
       case paymentTerms:
         return MaterialPageRoute(builder: (_) => const TermsPage());
       case createLoan:
-        return MaterialPageRoute(builder: (_) => const CreateloanPage());
+        return MaterialPageRoute(builder: (_) => const CreateLoanPage());
       case createBorrower:
-        return MaterialPageRoute(builder: (_) => const CreateborrowerPage());
+        return MaterialPageRoute(builder: (_) => const CreateBorrowerPage());
       case qrScan:
         return MaterialPageRoute(builder: (_) => const QRScanPage());
       case profile:
