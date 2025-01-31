@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/home/home_page.dart';
+import 'package:wetrack/screens/loan/Profiles/loan_profile.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
 import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart';
+import 'package:wetrack/models/loan_model.dart'; // Ensure you import the Loan model
 
 class CreateLoanPage extends StatefulWidget {
   const CreateLoanPage({super.key});
@@ -21,19 +23,17 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
   final TextEditingController _loanAmountController = TextEditingController();
   final TextEditingController _interestController = TextEditingController();
 
-  int _selectedIndex = 3; // Set to "Create Loan" tab initially
+  int _selectedIndex = 3;
   List<Map<String, dynamic>> terms = [
-    {"date": DateTime.now(), "amount": 0.0}, // Default term with date and amount
+    {"date": DateTime.now(), "amount": 0.0},
   ];
 
-  // Function to add another term (with date and amount)
   void _addAnotherTerm() {
     setState(() {
       terms.add({"date": DateTime.now(), "amount": 0.0});
     });
   }
 
-  // Function to select a date for each term
   Future<void> _selectDate(int index) async {
     DateTime? selectedDate = await showDatePicker(
       context: context,
@@ -48,7 +48,6 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
     }
   }
 
-  // Function for navigation handling
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -90,29 +89,53 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
     }
   }
 
+  // Method to handle loan profile creation and navigation
+  void _createLoanProfile() {
+      final loan = Loan(
+      loanId: 'some_unique_id',  // You need to generate or retrieve a unique loanId
+      loanProvider: _loanProviderController.text,
+      loanPurpose: _loanPurposeController.text,
+      paymentMethod: _paymentMethodController.text,
+      loanAmount: double.tryParse(_loanAmountController.text) ?? 0.0,
+      interest: double.tryParse(_interestController.text) ?? 0.0,
+      isPaid: false,  // Set the isPaid parameter (e.g., false for unpaid loans)
+      createdAt: DateTime.now(),
+      terms: terms,  // Make sure 'terms' is defined
+    );
+
+
+    // Pass the loan object to the LoanProfilePage
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoanProfilePage(loan: loan),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            automaticallyImplyLeading: false, // This removes the back button space
-          title: const Row(
-            children: [
-              Text(
-                'Create New Loan',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Row(
+          children: [
+            Text(
+              'Create New Loan',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
               ),
-              Spacer(),  // This will push the QR code icon to the right
-              Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: Icon(Icons.qr_code_scanner),
-              ),
-            ],
-          ),
+            ),
+            Spacer(),
+            Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Icon(Icons.qr_code_scanner),
+            ),
+          ],
         ),
-      body: SingleChildScrollView( // Make the body scrollable
+      ),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -123,7 +146,8 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const CreateBorrowerPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const CreateBorrowerPage()),
                     );
                   },
                   child: Container(
@@ -131,16 +155,16 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
                     alignment: Alignment.center,
                     child: Text(
                       'Borrower',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
                     ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const CreateLoanPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const CreateLoanPage()),
                     );
                   },
                   child: Container(
@@ -149,8 +173,8 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
                     child: Text(
                       'Loan',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                      ),
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ),
                 ),
@@ -184,12 +208,11 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
               ),
             ),
             const SizedBox(height: 10),
-            // Dynamically generated term fields (date and amount)
             Column(
               children: List.generate(
                 terms.length,
                 (index) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0), // Added spacing
+                  padding: const EdgeInsets.only(bottom: 12.0),
                   child: Row(
                     children: [
                       _buildDateField(index),
@@ -214,7 +237,7 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _createLoanProfile, // Updated to use the new method
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -259,8 +282,7 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-                color: Color(0xFF585656), width: 2),
+            borderSide: const BorderSide(color: Color(0xFF585656), width: 2),
           ),
         ),
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -278,7 +300,7 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
         child: AbsorbPointer(
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: "Date", // Changed to "Date"
+              labelText: "Date",
               labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontSize: 12,
                     fontWeight: FontWeight.normal,
