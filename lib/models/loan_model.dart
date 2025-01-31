@@ -1,49 +1,55 @@
-import 'package:wetrack/models/payment_term.dart';  // Import PaymentTerm model
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Loan {
-  String id;
-  String borrowerId;  // Reference to the borrower
+  String loanId;
+  String loanProvider;
   String loanPurpose;
   String paymentMethod;
   double loanAmount;
   double interest;
-  List<PaymentTerm> paymentTerms;  // List of payment terms
+  bool isPaid;
+  DateTime createdAt;
+  List<Map<String, dynamic>> terms;
 
   Loan({
-    required this.id,
-    required this.borrowerId,  // Borrower's ID
+    required this.loanId,  // 'id' is required
+    required this.loanProvider,
     required this.loanPurpose,
     required this.paymentMethod,
     required this.loanAmount,
     required this.interest,
-    required this.paymentTerms,  // List of payment terms
+    required this.isPaid,  // 'isPaid' is required
+    required this.createdAt,
+    required this.terms,
   });
 
   // Convert Loan to Map for Firestore
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'borrowerId': borrowerId,  // Store the borrower's ID
+      'loanId': loanId,
+      'loanProvider': loanProvider,
       'loanPurpose': loanPurpose,
       'paymentMethod': paymentMethod,
       'loanAmount': loanAmount,
       'interest': interest,
-      'paymentTerms': paymentTerms.map((term) => term.toMap()).toList(),  // Convert payment terms to Map
+      'isPaid': isPaid,
+      'createdAt': createdAt,
+      'terms': terms,
     };
   }
 
   // Create Loan from Firestore Map
-  factory Loan.fromMap(Map<String, dynamic> map) {
+  factory Loan.fromMap(Map<String, dynamic> map, String loanId) {
     return Loan(
-      id: map['id'],
-      borrowerId: map['borrowerId'],  // Get borrower ID from Firestore data
+      loanId: loanId,
+      loanProvider: map['loanProvider'],
       loanPurpose: map['loanPurpose'],
       paymentMethod: map['paymentMethod'],
       loanAmount: map['loanAmount'],
       interest: map['interest'],
-      paymentTerms: List<PaymentTerm>.from(
-        map['paymentTerms'].map((term) => PaymentTerm.fromMap(term))
-      ),
+      isPaid: map['isPaid'],
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
+      terms: List<Map<String, dynamic>>.from(map['terms']),
     );
   }
 }

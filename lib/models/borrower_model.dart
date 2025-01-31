@@ -34,7 +34,7 @@ class Borrower {
       phone: map['phone'],
       email: map['email'],
       loans: List<Loan>.from(
-        map['loans'].map((loan) => Loan.fromMap(loan))
+        map['loans'].map((loanMap) => Loan.fromMap(loanMap, map['id'])) // Pass the second argument (id)
       ),
     );
   }

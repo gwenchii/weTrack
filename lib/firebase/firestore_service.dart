@@ -1,98 +1,52 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
-import 'package:wetrack/models/loan_model.dart';
-import 'package:wetrack/models/borrower_model.dart';
-import 'package:wetrack/models/payment_term.dart';
-class FirestoreService {
-  // ignore: unused_field
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final Logger _logger = Logger(); // Initialize the logger
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore to handle Timestamp
 
-  // Collection references
-  final CollectionReference borrowersCollection =
-      FirebaseFirestore.instance.collection('borrowers');
-  final CollectionReference loansCollection =
-      FirebaseFirestore.instance.collection('loans');
+class Loan {
+  final String loanProvider;
+  final String loanPurpose;
+  final String paymentMethod;
+  final double loanAmount;
+  final double interest;
+  final List<Map<String, dynamic>> terms;
+  final DateTime createdAt;
 
-  // Create Borrower in Firestore
-  Future<void> createBorrower(Borrower borrower) async {
-    try {
-      await borrowersCollection.doc(borrower.id).set(borrower.toMap());
-      _logger.i("Borrower added successfully with ID: ${borrower.id}");
-    } catch (e) {
-      _logger.e("Error adding borrower: $e");
-    }
+  Loan({
+    required this.loanProvider,
+    required this.loanPurpose,
+    required this.paymentMethod,
+    required this.loanAmount,
+    required this.interest,
+    required this.terms,
+    required this.createdAt,
+  });
+
+  // Factory method to create a Loan object from a Map
+  factory Loan.fromMap(Map<String, dynamic> map) {
+    return Loan(
+      loanProvider: map['loanProvider'],
+      loanPurpose: map['loanPurpose'],
+      paymentMethod: map['paymentMethod'],
+      loanAmount: map['loanAmount'],
+      interest: map['interest'],
+      terms: List<Map<String, dynamic>>.from(map['terms']),
+      createdAt: map['createdAt'] is Timestamp
+          ? (map['createdAt'] as Timestamp).toDate() // Convert Firestore Timestamp to DateTime
+          : DateTime.now(), // Fallback in case it's not a Timestamp
+    );
   }
 
-  // Get Borrower by ID from Firestore
-  Future<Borrower?> getBorrower(String borrowerId) async {
-    try {
-      DocumentSnapshot doc = await borrowersCollection.doc(borrowerId).get();
-      if (doc.exists) {
-        _logger.i("Fetched borrower with ID: $borrowerId");
-        return Borrower.fromMap(doc.data() as Map<String, dynamic>);
-      } else {
-        _logger.w("No borrower found with ID: $borrowerId");
-        return null;
-      }
-    } catch (e) {
-      _logger.e("Error fetching borrower with ID $borrowerId: $e");
-      return null;
-    }
+  // Method to convert Loan object to a Map (for saving to Firestore)
+  Map<String, dynamic> toMap() {
+    return {
+      'loanProvider': loanProvider,
+      'loanPurpose': loanPurpose,
+      'paymentMethod': paymentMethod,
+      'loanAmount': loanAmount,
+      'interest': interest,
+      'terms': terms,
+      'createdAt': Timestamp.fromDate(createdAt), // Convert DateTime to Firestore Timestamp
+    };
   }
 
-  // Create Loan in Firestore
-  Future<void> createLoan(Loan loan) async {
-    try {
-      await loansCollection.doc(loan.id).set(loan.toMap());
-      _logger.i("Loan added successfully with ID: ${loan.id}");
-    } catch (e) {
-      _logger.e("Error adding loan: $e");
-    }
-  }
-
-  // Get Loan by ID from Firestore
-  Future<Loan?> getLoan(String loanId) async {
-    try {
-      DocumentSnapshot doc = await loansCollection.doc(loanId).get();
-      if (doc.exists) {
-        _logger.i("Fetched loan with ID: $loanId");
-        return Loan.fromMap(doc.data() as Map<String, dynamic>);
-      } else {
-        _logger.w("No loan found with ID: $loanId");
-        return null;
-      }
-    } catch (e) {
-      _logger.e("Error fetching loan with ID $loanId: $e");
-      return null;
-    }
-  }
-
-  // Add a new PaymentTerm for a Borrower
-  Future<void> addPaymentTermToBorrower(
-      String borrowerId, PaymentTerm paymentTerm) async {
-    try {
-      DocumentReference borrowerRef =
-          borrowersCollection.doc(borrowerId);
-      borrowerRef.update({
-        'paymentTerms': FieldValue.arrayUnion([paymentTerm.toMap()])
-      });
-      _logger.i("Payment term added to borrower with ID: $borrowerId");
-    } catch (e) {
-      _logger.e("Error adding payment term to borrower: $e");
-    }
-  }
-
-  // Add a new PaymentTerm to a Loan
-  Future<void> addPaymentTermToLoan(String loanId, PaymentTerm paymentTerm) async {
-    try {
-      DocumentReference loanRef = loansCollection.doc(loanId);
-      loanRef.update({
-        'paymentTerms': FieldValue.arrayUnion([paymentTerm.toMap()])
-      });
-      _logger.i("Payment term added to loan with ID: $loanId");
-    } catch (e) {
-      _logger.e("Error adding payment term to loan: $e");
-    }
-  }
+  // Optionally, you can set the ID if you need it for document references
+  String? get id => null; // Or assign a document ID if needed
 }

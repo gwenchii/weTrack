@@ -21,7 +21,7 @@ import 'package:wetrack/screens/loan/createborrower_page.dart';
 import 'package:wetrack/screens/loan/createloan_page.dart';
 import 'package:wetrack/screens/loan/scanqr_page.dart';
 import 'package:wetrack/screens/loan/Profiles/borrower_profile.dart';
-import 'package:wetrack/screens/loan/loan_profile.dart';
+import 'package:wetrack/screens/loan/Profiles/loan_profile.dart';
 //profile
 import 'package:wetrack/screens/profile/contact_us.dart';
 import 'package:wetrack/screens/profile/notification_page.dart';
