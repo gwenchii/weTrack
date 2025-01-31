@@ -18,6 +18,10 @@ WeTrack is a user-friendly mobile application designed to simplify personal loan
 
 📈 Interest Calculator – Calculation of loan interest & payment terms
 
+## 🗂️	Installation and Setup
+
+**Prerequisites:**
+📈 Install [flutter](https://docs.flutter.dev/get-started/install)
 
 
 
