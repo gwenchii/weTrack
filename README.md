@@ -21,7 +21,14 @@ WeTrack is a user-friendly mobile application designed to simplify personal loan
 ## 🗂️	Installation and Setup
 
 **Prerequisites:**
-📈 Install [flutter](https://docs.flutter.dev/get-started/install)
+
+🚩 Install [Flutter](https://docs.flutter.dev/get-started/install)
+
+🚩 Install [Android Studio](https://developer.android.com/studio) 
+
+## 📞 Contact Us!
+
+For more questions, reach out at 
 
 
 
