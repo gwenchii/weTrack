@@ -9,10 +9,15 @@ WeTrack is a user-friendly mobile application designed to simplify personal loan
 ## 📍 Features
 
 📈 User Management  – Secure sign-up, login, and profile management
+
 📈 Loan Tracking – Add, edit, and manage loans
+
 📈 Payment Monitoring – Real-time tracking of payments and repayment schedules
+
 📈 Automated Reminders – Get notified of upcoming payments
+
 📈 Interest Calculator – Calculation of loan interest & payment terms
+
 
 
 
