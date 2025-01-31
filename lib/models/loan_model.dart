@@ -1,3 +1,5 @@
+// Import payment terms for the loan model
+
 class Loan {
   String id;
   String borrowerId;
@@ -5,9 +7,8 @@ class Loan {
   String paymentMethod;
   double loanAmount;
   double interest;
-  List<Map<String, dynamic>> paymentTerms;  // Ensure this field exists
+  List<Map<String, dynamic>> paymentTerms;  // List of payment terms
 
-  // Constructor with named parameters, including paymentTerms
   Loan({
     required this.id,
     required this.borrowerId,
@@ -15,7 +16,7 @@ class Loan {
     required this.paymentMethod,
     required this.loanAmount,
     required this.interest,
-    required this.paymentTerms,  // Add this line to pass paymentTerms
+    required this.paymentTerms,  // Pass payment terms
   });
 
   // Convert Loan to Map for Firestore

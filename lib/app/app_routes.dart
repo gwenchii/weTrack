@@ -19,6 +19,8 @@ import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
 import 'package:wetrack/screens/loan/createloan_page.dart';
 import 'package:wetrack/screens/loan/scanqr_page.dart';
+import 'package:wetrack/screens/loan/borrower_profile.dart';
+import 'package:wetrack/screens/loan/loan_profile.dart';
 //profile
 import 'package:wetrack/screens/profile/contact_us.dart';
 import 'package:wetrack/screens/profile/notification_page.dart';
@@ -49,6 +51,8 @@ class AppRoutes {
   static const String paymentTerms = '/calculator/payment-terms';
   static const String rates = '/calculator/rates';
   static const String createLoan = '/create-loan';
+  static const String borrowerProfile = '/borrower-profile';
+  static const String loanProfile = '/loan-profile';
   static const String createBorrower = '/create-borrower';
   static const String qrScan = '/qr-scan';
   static const String profile = '/profile';
@@ -58,52 +62,78 @@ class AppRoutes {
   static const String contactUs = '/contact-us';
 
   // Route generator for dynamic navigation
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case splash:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case login:
-        return MaterialPageRoute(builder: (_) => const LoginPage());
-      case signup:
-        return MaterialPageRoute(builder: (_) => const SignupPage());
-      case changePass:
-        return MaterialPageRoute(builder: (_) => const ChangePassword());
-      case resetPass:
-        return MaterialPageRoute(builder: (_) => const ResetPassword());
-      case home:
-        return MaterialPageRoute(builder: (_) => const HomePage());
-      case dashboard:
-        return MaterialPageRoute(builder: (_) => const DashboardPage());
-      case simpleInterest:
-        return MaterialPageRoute(builder: (_) => const SimpleInterest());
-      case compoundInterest:
-        return MaterialPageRoute(builder: (_) => const CompoundInterest());
-      case rates:
-        return MaterialPageRoute(builder: (_) => const Rates());
-      case paymentTerms:
-        return MaterialPageRoute(builder: (_) => const TermsPage());
-      case createLoan:
-        return MaterialPageRoute(builder: (_) => const CreateLoanPage());
-      case createBorrower:
-        return MaterialPageRoute(builder: (_) => const CreateBorrowerPage());
-      case qrScan:
-        return MaterialPageRoute(builder: (_) => const QRScanPage());
-      case profile:
-        return MaterialPageRoute(builder: (_) => const ProfilePage());
-      case notifications:
-        return MaterialPageRoute(builder: (_) => const NotificationPage());
-      case termsAndConditions:
-        return MaterialPageRoute(builder: (_) => const TermnsandCondition());
-      case privacyPolicy:
-        return MaterialPageRoute(builder: (_) => const PrivacyPolicyPage());
-      case contactUs:
-        return MaterialPageRoute(builder: (_) => const ContactUsPage());
-      default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(child: Text('No route defined for ${settings.name}')),
-          ),
-        );
-    }
+ static Route<dynamic> generateRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case splash:
+      return MaterialPageRoute(builder: (_) => const SplashScreen());
+    case login:
+      return MaterialPageRoute(builder: (_) => const LoginPage());
+    case signup:
+      return MaterialPageRoute(builder: (_) => const SignupPage());
+    case changePass:
+      return MaterialPageRoute(builder: (_) => const ChangePassword());
+    case resetPass:
+      return MaterialPageRoute(builder: (_) => const ResetPassword());
+    case home:
+      return MaterialPageRoute(builder: (_) => const HomePage());
+    case dashboard:
+      return MaterialPageRoute(builder: (_) => const DashboardPage());
+    case simpleInterest:
+      return MaterialPageRoute(builder: (_) => const SimpleInterestPage());
+    case compoundInterest:
+      return MaterialPageRoute(builder: (_) => const CompoundInterestPage());
+    case rates:
+      return MaterialPageRoute(builder: (_) => const Rates());
+    case paymentTerms:
+      return MaterialPageRoute(builder: (_) => const TermsPage());
+    case createLoan:
+      return MaterialPageRoute(builder: (_) => const CreateLoanPage());
+    case createBorrower:
+      return MaterialPageRoute(builder: (_) => const CreateBorrowerPage());
+      
+    case borrowerProfile:
+      final borrower = settings.arguments as Borrower?;
+      if (borrower == null) {
+        return _errorRoute('Missing borrower data');
+      }
+      return MaterialPageRoute(
+        builder: (_) => BorrowerProfilePage(borrower: borrower),
+      );
+
+    case loanProfile:
+      final loan = settings.arguments as Loan?;
+      if (loan == null) {
+        return _errorRoute('Missing loan data');
+      }
+      return MaterialPageRoute(
+        builder: (_) => LoanProfilePage(loan: loan),
+      );
+
+    case qrScan:
+      return MaterialPageRoute(builder: (_) => const QRScanPage());
+    case profile:
+      return MaterialPageRoute(builder: (_) => const ProfilePage());
+    case notifications:
+      return MaterialPageRoute(builder: (_) => const NotificationPage());
+    case termsAndConditions:
+      return MaterialPageRoute(builder: (_) => const TermnsandCondition());
+    case privacyPolicy:
+      return MaterialPageRoute(builder: (_) => const PrivacyPolicyPage());
+    case contactUs:
+      return MaterialPageRoute(builder: (_) => const ContactUsPage());
+
+    default:
+      return _errorRoute('No route defined for ${settings.name}');
   }
+}
+
+// Helper function for error routes
+static Route<dynamic> _errorRoute(String message) {
+  return MaterialPageRoute(
+    builder: (_) => Scaffold(
+      body: Center(child: Text('Error: $message')),
+    ),
+  );
+}
+
 }

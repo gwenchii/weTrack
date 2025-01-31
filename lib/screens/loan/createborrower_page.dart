@@ -1,11 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createloan_page.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
-import 'package:wetrack/screens/home/dashboard_page.dart'; // Import your actual screens here
+import 'package:wetrack/screens/home/dashboard_page.dart';
 import 'package:wetrack/screens/profile/userprofile_page.dart';
 import 'package:wetrack/screens/calculator/compound_interest.dart';
-// Import for date formatting
 
 class CreateBorrowerPage extends StatefulWidget {
   const CreateBorrowerPage({super.key});
@@ -24,19 +26,19 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
   final TextEditingController _loanAmountController = TextEditingController();
   final TextEditingController _interestController = TextEditingController();
 
-  int _selectedIndex = 3; // Set to "Create Borrower" tab initially
+  int _selectedIndex = 3;
   List<Map<String, dynamic>> terms = [
-    {"date": DateTime.now(), "amount": 0.0}, // Default term with date and amount
+    {"date": DateTime.now(), "amount": 0.0},
   ];
 
-  // Function to add another term (with date and amount)
+  // Add new term
   void _addAnotherTerm() {
     setState(() {
       terms.add({"date": DateTime.now(), "amount": 0.0});
     });
   }
 
-  // Function to select a date for each term
+  // Date selection for payment terms
   Future<void> _selectDate(int index) async {
     DateTime? selectedDate = await showDatePicker(
       context: context,
@@ -51,7 +53,51 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
     }
   }
 
-  // Function for navigation handling
+  // Function to save data to Firestore
+  Future<void> _saveLoanProfile() async {
+    final name = _nameController.text;
+    final phone = _phoneController.text;
+    final email = _emailController.text;
+    final loanPurpose = _loanPurposeController.text;
+    final paymentMethod = _paymentMethodController.text;
+    final loanAmount = double.tryParse(_loanAmountController.text) ?? 0.0;
+    final interest = double.tryParse(_interestController.text) ?? 0.0;
+
+    if (name.isNotEmpty && phone.isNotEmpty && loanPurpose.isNotEmpty && paymentMethod.isNotEmpty && loanAmount > 0 && interest > 0) {
+      // Firestore references for borrower and loan profile
+      final borrowerRef = FirebaseFirestore.instance.collection('borrowers').doc();
+      final loanRef = FirebaseFirestore.instance.collection('loans').doc();
+
+      try {
+        // Save borrower data
+        await borrowerRef.set({
+          'name': name,
+          'phone': phone,
+          'email': email,
+        });
+
+        // Save loan data
+        await loanRef.set({
+          'borrowerId': borrowerRef.id,
+          'loanPurpose': loanPurpose,
+          'paymentMethod': paymentMethod,
+          'loanAmount': loanAmount,
+          'interest': interest,
+          'terms': terms,
+        });
+
+        // ignore: duplicate_ignore
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Loan Profile Created Successfully')));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please fill all fields')));
+    }
+  }
+
+  // Navigation handling
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -59,34 +105,19 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
 
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
         break;
       case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardPage()),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardPage()));
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const CompoundInterest()),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CompoundInterestPage()));
         break;
       case 3:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const CreateBorrowerPage()),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CreateBorrowerPage()));
         break;
       case 4:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
         break;
       default:
         break;
@@ -97,28 +128,18 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // This removes the back button space
+        automaticallyImplyLeading: false,
         title: const Row(
           children: [
-            Expanded(
-              child: Text(
-                'Create New Loan',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            Expanded(child: Text('Create New Loan', style: TextStyle(fontWeight: FontWeight.bold))),
             Align(
               alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: Icon(Icons.qr_code_scanner),
-              ),
+              child: Padding(padding: EdgeInsets.only(right: 10), child: Icon(Icons.qr_code_scanner)),
             ),
           ],
         ),
       ),
-      body: SingleChildScrollView( 
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -127,51 +148,31 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const CreateBorrowerPage()),
-                    );
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CreateBorrowerPage()));
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.4,
                     alignment: Alignment.center,
-                    child: Text(
-                      'Borrower',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
+                    child: Text('Borrower', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
                   ),
                 ),
-               GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const CreateLoanPage()),
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Loan',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateLoanPage()));
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    alignment: Alignment.center,
+                    child: Text('Loan', style: Theme.of(context).textTheme.bodyMedium),
                   ),
-
+                ),
               ],
             ),
             const Divider(),
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                "Borrower's Profile",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
+              child: Text("Borrower's Profile", style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 10),
             _buildTextField('Name*', _nameController),
@@ -180,12 +181,7 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                "Loan Profile",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
+              child: Text("Loan Profile", style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 10),
             _buildTextField('Loan Purpose*', _loanPurposeController),
@@ -195,67 +191,42 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                "Set Up Payment Terms",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
+              child: Text("Set Up Payment Terms", style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 10),
-            // Dynamically generated term fields (date and amount)
             Column(
-              children: List.generate(
-                terms.length,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0), // Added spacing
-                  child: Row(
-                    children: [
-                      _buildDateField(index),
-                      const SizedBox(width: 11),
-                      _buildAmountField(index),
-                    ],
-                  ),
+              children: List.generate(terms.length, (index) => Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: Row(
+                  children: [
+                    _buildDateField(index),
+                    const SizedBox(width: 11),
+                    _buildAmountField(index),
+                  ],
                 ),
-              ),
+              )),
             ),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: _addAnotherTerm,
-                child: Text(
-                  "+ Add Another Term",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
-                ),
+                child: Text("+ Add Another Term", style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.normal)),
               ),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _saveLoanProfile,
               style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 backgroundColor: const Color(0xFF97E2AA),
                 fixedSize: const Size(344, 32),
               ),
-              child: Text(
-                'Create Loan Profile',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black,
-                    ),
-              ),
+              child: Text('Create Loan Profile', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.normal, color: Colors.black)),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar: CustomBottomNavigationBar(currentIndex: _selectedIndex, onTap: _onItemTapped),
     );
   }
 
@@ -266,25 +237,13 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-              ),
+          labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12, fontWeight: FontWeight.normal),
           filled: true,
           fillColor: const Color(0xFFF6F0F0),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: Color(0xFF585656), width: 1),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(
-                color: Color(0xFF585656), width: 2),
-          ),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFF585656), width: 1)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Color(0xFF585656), width: 2)),
         ),
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontSize: 12,
-            ),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12),
       ),
     );
   }
@@ -297,15 +256,10 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
         child: AbsorbPointer(
           child: TextFormField(
             decoration: InputDecoration(
-              labelText: "Date", // Changed to "Date"
-              labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                  ),
+              labelText: "Date",
+              labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12, fontWeight: FontWeight.normal),
               prefixIcon: const Icon(Icons.calendar_today),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             ),
           ),
         ),
@@ -326,13 +280,8 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
         },
         decoration: InputDecoration(
           labelText: 'Insert Amount',
-          labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-              ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+          labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12, fontWeight: FontWeight.normal),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         ),
       ),
     );

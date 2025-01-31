@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "980707894137",
+    "firebase_url": "https://wetrack-f1778-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "wetrack-f1778",
     "storage_bucket": "wetrack-f1778.firebasestorage.app"
   },

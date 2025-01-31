@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart'; // Import your actual screens here
 import 'package:wetrack/screens/loan/createborrower_page.dart';
 import 'package:wetrack/screens/profile/userprofile_page.dart';
-import 'package:wetrack/screens/calculator/compound_interest.dart'; // Calculator screen import
+// Calculator screen import
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
         // Calculator
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const CompoundInterest()),
+          MaterialPageRoute(builder: (context) => const SimpleInterestPage()),
         );
         break;
       case 3:

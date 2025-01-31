@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart'; // Import Dashboard
 import 'package:wetrack/screens/loan/createborrower_page.dart'; // Import Create Borrower
-import 'package:wetrack/screens/calculator/compound_interest.dart'; // Import Calculator
+// Import Calculator
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -37,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const CompoundInterest()),
+          MaterialPageRoute(builder: (context) => const SimpleInterestPage()),
         );
         break;
       case 3:

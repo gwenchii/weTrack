@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart';
 import 'package:wetrack/screens/profile/userprofile_page.dart';
-import 'package:wetrack/screens/calculator/compound_interest.dart';
 
 class CreateLoanPage extends StatefulWidget {
   const CreateLoanPage({super.key});
@@ -70,7 +70,7 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
       case 2:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const CompoundInterest()),
+          MaterialPageRoute(builder: (context) => const SimpleInterestPage()),
         );
         break;
       case 3:

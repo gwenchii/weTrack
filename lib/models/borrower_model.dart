@@ -1,5 +1,3 @@
-// borrower_model.dart
-
 import 'payment_term.dart';  // Make sure PaymentTerm is imported
 
 class Borrower {
@@ -7,14 +5,14 @@ class Borrower {
   String name;
   String phone;
   String email;
-  List<PaymentTerm> paymentTerms;  // Add the paymentTerms field
+  List<PaymentTerm> paymentTerms;  // List of payment terms for the borrower
 
   Borrower({
     required this.id,
     required this.name,
     required this.phone,
     required this.email,
-    required this.paymentTerms,  // Add this parameter to the constructor
+    required this.paymentTerms,  // List of payment terms
   });
 
   // Convert Borrower to Map for Firestore

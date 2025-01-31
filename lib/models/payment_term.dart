@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';  // For Firestore Timestamp
 
 class PaymentTerm {
   String id;
@@ -24,7 +24,7 @@ class PaymentTerm {
   factory PaymentTerm.fromMap(Map<String, dynamic> map) {
     return PaymentTerm(
       id: map['id'],
-      date: (map['date'] as Timestamp).toDate(),
+      date: (map['date'] as Timestamp).toDate(),  // Convert Firestore Timestamp to DateTime
       amount: map['amount'],
     );
   }
