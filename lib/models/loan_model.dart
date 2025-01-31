@@ -9,16 +9,16 @@ class Loan {
   double interest;
   bool isPaid;
   DateTime createdAt;
-  List<Map<String, dynamic>> terms;
+  List<Map<String, dynamic>> terms; // List of terms with proof and payment status
 
   Loan({
-    required this.loanId,  // 'id' is required
+    required this.loanId, // 'id' is required
     required this.loanProvider,
     required this.loanPurpose,
     required this.paymentMethod,
     required this.loanAmount,
     required this.interest,
-    required this.isPaid,  // 'isPaid' is required
+    required this.isPaid, // 'isPaid' is required
     required this.createdAt,
     required this.terms,
   });
@@ -51,5 +51,11 @@ class Loan {
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       terms: List<Map<String, dynamic>>.from(map['terms']),
     );
+  }
+
+  // Update a term with proof of payment and mark it as paid
+  void addProofOfPayment(int index, String proofFileName) {
+    terms[index]["paid"] = true;
+    terms[index]["proofFile"] = proofFileName; // Store proof file name
   }
 }

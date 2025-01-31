@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:wetrack/models/loan_model.dart'; // Import Loan model
+import 'package:intl/intl.dart';
+import 'package:wetrack/models/loan_model.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
+import 'package:file_picker/file_picker.dart';
 
 class LoanProfilePage extends StatefulWidget {
-  final Loan loan; // Pass Loan object from the previous screen
-
+  final Loan loan;
   const LoanProfilePage({super.key, required this.loan});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoanProfilePageState createState() => _LoanProfilePageState();
 }
 
@@ -20,81 +22,55 @@ class _LoanProfilePageState extends State<LoanProfilePage> {
   void initState() {
     super.initState();
     loan = widget.loan;
-    remainingBalance = loan.loanAmount; // Start with the full loan amount
+    remainingBalance = loan.loanAmount;
+    _calculateTotalPaid();
   }
 
-  // Handle uploading proof of payment (simplified version)
-  void _uploadProofOfPayment(int index) {
-    // Here, you would implement file upload functionality
-    // For simplicity, we'll assume the proof is uploaded and the term is marked as paid
-    setState(() {
-      loan.terms[index]["amount"] = loan.terms[index]["amount"] - totalPaid;
-      remainingBalance -= totalPaid;
-      totalPaid = 0.0;
-    });
+  void _calculateTotalPaid() {
+    totalPaid = loan.terms.where((term) => term["paid"] == true)
+                          .fold(0.0, (sum, term) => sum + term["amount"]);
+  }
+
+  void _uploadProofOfPayment(int index) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+    );
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      print("File uploaded: ${file.name}");
+      setState(() {
+        loan.terms[index]["paid"] = true;  
+        loan.terms[index]["proofFile"] = file.name;
+        remainingBalance -= loan.terms[index]["amount"]; 
+        totalPaid += loan.terms[index]["amount"]; 
+      });
+    } else {
+      print("No file selected.");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Loan #${loan.loanProvider}'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: const Icon(Icons.qr_code_scanner),
-              onPressed: () {
-                // Handle QR code scanning
-              },
-            ),
-          ),
-        ],
+        title: Text('${loan.loanProvider.toUpperCase()} Loan'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Loan Details
             _buildLoanDetails(),
-
-            const Divider(),
-
-            // Payment Info
-            _buildPaymentInfo(),
-
-            const Divider(),
-
-            // Payment Schedule & Upload Proof
             _buildPaymentSchedule(),
-
-            // Upload proof button
-            ElevatedButton(
-              onPressed: () {
-                _uploadProofOfPayment(0); // Example for first term
-              },
-              child: Text('Upload Proof of Payment'),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Remaining balance
-            Text(
-              'Remaining Balance: \$${remainingBalance.toStringAsFixed(2)}',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-            ),
           ],
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 3, // assuming the current tab is "Create Loan"
-        onTap: (index) {
-          // Navigation logic for the bottom navigation bar
-        },
+        currentIndex: 3,
+        onTap: (index) {},
       ),
     );
   }
@@ -103,7 +79,7 @@ class _LoanProfilePageState extends State<LoanProfilePage> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
+        color: const Color(0xFFF6F0F0),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -111,8 +87,11 @@ class _LoanProfilePageState extends State<LoanProfilePage> {
         children: [
           _buildDetailRow('Loan Purpose', loan.loanPurpose),
           _buildDetailRow('Payment Method', loan.paymentMethod),
-          _buildDetailRow('Loan Amount', '\$${loan.loanAmount}'),
+          _buildDetailRow('Loan Amount', 'Php${loan.loanAmount.toStringAsFixed(2)}'),
           _buildDetailRow('Interest', '${loan.interest}%'),
+          const Divider(),
+          _buildDetailRow('Amount Paid', 'Php${totalPaid.toStringAsFixed(2)}'),
+          _buildDetailRow('Balance Remaining', 'Php${remainingBalance.toStringAsFixed(2)}'),
         ],
       ),
     );
@@ -128,38 +107,56 @@ class _LoanProfilePageState extends State<LoanProfilePage> {
     );
   }
 
-  Widget _buildPaymentInfo() {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildDetailRow('Amount Paid', '\$${totalPaid.toStringAsFixed(2)}'),
-          _buildDetailRow('Balance Remaining', '\$${remainingBalance.toStringAsFixed(2)}'),
-        ],
-      ),
-    );
-  }
-
   Widget _buildPaymentSchedule() {
+    final dateFormat = DateFormat('MMMM dd, yyyy');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 20),
         const Text('Payment Schedule', style: TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         for (int i = 0; i < loan.terms.length; i++) ...[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Term ${i + 1}: ${loan.terms[i]["date"].toString()}'),
-              Text('\$${loan.terms[i]["amount"]}'),
-            ],
+          Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(bottom: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF6F0F0),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            width: double.infinity,  // Adjusted width for responsiveness
+            height: 85, // Adjusted height to accommodate more content
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(dateFormat.format(loan.terms[i]["date"])),
+                    Text(
+                      'Php${loan.terms[i]["amount"]}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () => _uploadProofOfPayment(i),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      (loan.terms[i]["paid"] ?? false)
+                          ? "Paid"
+                          : "Upload Proof of Payment",
+                      style: TextStyle(
+                        color: (loan.terms[i]["paid"] ?? false) ? Colors.green : Colors.blue,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 8),
         ]
       ],
     );
