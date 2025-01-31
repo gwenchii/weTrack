@@ -1,16 +1,19 @@
-# wetrack
+# WeTrack 💰🔎
 
-A new Flutter project.
+*Loan Management App*
 
-## Getting Started
+## 📄	Overview
 
-This project is a starting point for a Flutter application.
+WeTrack is a user-friendly mobile application designed to simplify personal loan management for both lenders and borrowers. It allows users to track loan amounts, set terms, and monitor payment schedules effortlessly. With features like automated payment reminders, real-time payment tracking, interest calculations, and a shared dashboard, WeTrack ensures transparency and organization in financial dealings. Built for a diverse audience, including users with minimal tech experience, the app prioritizes ease of use and efficiency in managing loans.
 
-A few resources to get you started if this is your first Flutter project:
+## 📍 Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+📈 User Management  – Secure sign-up, login, and profile management
+📈 Loan Tracking – Add, edit, and manage loans
+📈 Payment Monitoring – Real-time tracking of payments and repayment schedules
+📈 Automated Reminders – Get notified of upcoming payments
+📈 Interest Calculator – Calculation of loan interest & payment terms
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
