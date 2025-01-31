@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
 import 'package:wetrack/screens/auth/login_page.dart';
+import 'package:wetrack/models/user_info.dart'; // Import user model
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -15,15 +18,71 @@ class _SignupPageState extends State<SignupPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _retypePasswordController = TextEditingController();
+  final TextEditingController _retypePasswordController =
+      TextEditingController();
 
-  void _handleSignup() {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  void _handleSignup() async {
     if (_formKey.currentState!.validate()) {
-      // Proceed with signup logic, such as calling an API or saving the data
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
+      try {
+        // Create user with Firebase Authentication
+        UserCredential userCredential =
+            await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+
+        // Store user details in Firestore
+        UserInfoModel newUser = UserInfoModel(
+          uid: userCredential.user!.uid,
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          phoneNumber: _phoneController.text.trim(),
+          email: _emailController.text.trim(),
+        );
+
+        await _firestore
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set(newUser.toJson());
+
+        // Navigate to LoginPage after successful signup
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      } on FirebaseAuthException catch (e) {
+        String errorMessage = "An error occurred. Please try again.";
+
+        if (e.code == 'weak-password') {
+          errorMessage = "The password is too weak.";
+        } else if (e.code == 'email-already-in-use') {
+          errorMessage = "The email address is already in use.";
+        } else if (e.code == 'invalid-email') {
+          errorMessage = "The email address is not valid.";
+        }
+
+        // Show an error dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Signup Error"),
+              content: Text(errorMessage),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
@@ -56,12 +115,11 @@ class _SignupPageState extends State<SignupPage> {
                   width: 180,
                 ),
                 const SizedBox(height: 20),
-                const SizedBox(height: 30),
                 const Text(
                   'Create an Account',
                   style: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold, // Bold the text
+                    fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
@@ -72,7 +130,6 @@ class _SignupPageState extends State<SignupPage> {
                   decoration: const InputDecoration(
                     labelText: 'First Name',
                     border: OutlineInputBorder(),
-            
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -178,7 +235,8 @@ class _SignupPageState extends State<SignupPage> {
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
                         );
                       },
                       child: const Text("Login"),

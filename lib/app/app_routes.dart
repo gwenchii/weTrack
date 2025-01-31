@@ -1,4 +1,5 @@
 // ignore_for_file: unused_import, constant_identifier_names
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //auth
@@ -71,7 +72,8 @@ class AppRoutes {
       case signup:
         return MaterialPageRoute(builder: (_) => const SignupPage());
       case changePass:
-        return MaterialPageRoute(builder: (_) => const ChangePasswordPage());
+        return MaterialPageRoute(
+            builder: (_) => ChangePasswordPage(auth: FirebaseAuth.instance));
       case resetPass:
         return MaterialPageRoute(builder: (_) => const ResetPassword());
       case home:

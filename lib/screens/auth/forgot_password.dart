@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -10,16 +11,32 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
 
-  void _handleResetPassword() {
+  void _handleResetPassword() async {
     if (_formKey.currentState!.validate()) {
-      // Proceed with password reset logic (e.g., API call)
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password reset successful')),
-      );
-      Navigator.pop(context) ;  // Go back to the previous screen (e.g., login)
+      try {
+        // Send a password reset email
+        await FirebaseAuth.instance.sendPasswordResetEmail(
+          email: _emailController.text.trim(),
+        );
+
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Password reset email sent. Check your inbox.'),
+          ),
+        );
+
+        // Navigate back to the previous screen (e.g., login)
+        Navigator.pop(context);
+      } catch (e) {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString()}'),
+          ),
+        );
+      }
     }
   }
 
@@ -32,9 +49,9 @@ class _ResetPasswordState extends State<ResetPassword> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 255, 255, 255),  // White
-              Color.fromARGB(255, 147, 211, 129),  // Light Green
-              Color.fromARGB(255, 82, 179, 98),    // Dark Green
+              Color.fromARGB(255, 255, 255, 255), // White
+              Color.fromARGB(255, 147, 211, 129), // Light Green
+              Color.fromARGB(255, 82, 179, 98), // Dark Green
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -48,7 +65,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'photos/app_logo.png',  // Replace with your app logo path
+                  'photos/app_logo.png', // Replace with your app logo path
                   width: 180,
                 ),
                 const SizedBox(height: 20),
@@ -76,41 +93,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 10),
-                // New Password
-                TextFormField(
-                  controller: _newPasswordController,
-                  decoration: const InputDecoration(
-                    labelText: 'New Password',
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a new password';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                // Confirm New Password
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Confirm New Password',
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your new password';
-                    }
-                    if (value != _newPasswordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
                 const SizedBox(height: 20),
                 // Reset Password Button
                 ElevatedButton(
@@ -124,7 +106,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     const Text("Remembered your password?"),
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);  // Go back to the login screen
+                        Navigator.pop(context); // Go back to the login screen
                       },
                       child: const Text("Login"),
                     ),
