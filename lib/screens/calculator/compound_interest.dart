@@ -3,11 +3,10 @@ import 'package:intl/intl.dart';
 import 'dart:math';
 import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/calculator/rates.dart';
-import 'package:wetrack/screens/calculator/terms.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
-import 'package:wetrack/screens/profile/userprofile_page.dart';
+import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 
 class CompoundInterestPage extends StatefulWidget {
@@ -52,7 +51,7 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CreateBorrowerPage()));
         break;
       case 4:
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
         break;
       default:
         break;
@@ -141,7 +140,7 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Rates()));
         break;
       case 'Payment Term':
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TermsPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
         break;
       default:
         break;
@@ -155,7 +154,7 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
         automaticallyImplyLeading: false,
         title: const Row(
           children: [
-            Expanded(child: Text('Payment Term Calculator', style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(child: Text('Payment Term Calculator', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),),
           ],
         ),
       ),

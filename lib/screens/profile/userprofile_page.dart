@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wetrack/screens/calculator/simple_interest.dart';
-import 'package:wetrack/screens/home/home_page.dart';
-import 'package:wetrack/widgets/navigation_bar.dart';
-import 'package:wetrack/screens/home/dashboard_page.dart'; // Import Dashboard
-import 'package:wetrack/screens/loan/createborrower_page.dart'; // Import Create Borrower
-// Import Calculator
+import 'package:wetrack/screens/auth/change_password.dart'; // Change Password Page
+import 'package:wetrack/screens/auth/delete_account.dart'; // Delete Account Page
+import 'package:wetrack/widgets/navigation_bar.dart'; // Custom Bottom Navigation
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,83 +11,93 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int _selectedIndex = 4; // Profile Page is selected
+  int _selectedIndex = 4; // Profile Page index
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  // Define a function to navigate to the screens
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Update the selected index
+      _selectedIndex = index;
     });
-
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardPage()),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SimpleInterestPage()),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const CreateBorrowerPage()),
-        );
-        break;
-      case 4:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
-        );
-        break;
-      default:
-        break;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Gradient
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 255, 255, 255),
-                  Color.fromARGB(255, 147, 211, 129),
-                  Color.fromARGB(255, 82, 179, 98),
+      appBar: AppBar(
+        title: const Text('Profile', style: TextStyle(fontWeight: FontWeight.bold)),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(25.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 5.0,
+                    offset: Offset(0, 2),
+                  ),
                 ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+              ),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  TextField(
+                    controller: _phoneController,
+                    decoration: const InputDecoration(
+                      labelText: 'Phone',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ListTile(
+                    title: const Text('Change Password', style: TextStyle(fontSize: 16)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ChangePasswordPage()),
+                      );
+                    },
+                  ),
+                  const Divider(),
+
+                  ListTile(
+                    title: const Text('Delete Your Account', style: TextStyle(fontSize: 16, color: Colors.red)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const DeleteAccountPage()),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
-          ),
-          // Overlay Text
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 70.0, horizontal: 25.0),
-            child: Text(
-              "User Profile",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _selectedIndex,

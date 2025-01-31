@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wetrack/screens/calculator/simple_interest.dart';
+import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart'; // Import your actual screens here
 import 'package:wetrack/screens/loan/createborrower_page.dart';
-import 'package:wetrack/screens/profile/userprofile_page.dart';
-// Calculator screen import
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         // Profile Page
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
+          MaterialPageRoute(builder: (context) => const SettingsPage()),
         );
         break;
       default:
@@ -98,8 +98,10 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _selectedIndex, // Pass the current index to the navigation bar
-        onTap: _onItemTapped, // Handle tab tap and navigate to corresponding screen
+        currentIndex:
+            _selectedIndex, // Pass the current index to the navigation bar
+        onTap:
+            _onItemTapped, // Handle tab tap and navigate to corresponding screen
       ),
     );
   }

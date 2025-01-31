@@ -3,7 +3,7 @@ import 'package:intl/intl.dart'; // For date formatting
 import 'package:wetrack/screens/home/dashboard_page.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
-import 'package:wetrack/screens/profile/userprofile_page.dart';
+import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 
 class TermsPage extends StatefulWidget {
@@ -44,7 +44,7 @@ class _TermsPageState extends State<TermsPage> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CreateBorrowerPage()));
         break;
       case 4:
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
         break;
       default:
         break;
@@ -113,7 +113,7 @@ void _calculatePaymentSchedule() {
         automaticallyImplyLeading: false,
         title: const Row(
           children: [
-            Expanded(child: Text('Payment Terms Calculator', style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(child: Text('Payment Terms Calculator', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
           ],
         ),
       ),

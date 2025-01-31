@@ -1,18 +1,18 @@
-import 'payment_term.dart';  // Make sure PaymentTerm is imported
+import 'package:wetrack/models/loan_model.dart';  // Import Loan model
 
 class Borrower {
   String id;
   String name;
   String phone;
   String email;
-  List<PaymentTerm> paymentTerms;  // List of payment terms for the borrower
+  List<Loan> loans;  // List of loans associated with this borrower
 
   Borrower({
     required this.id,
     required this.name,
     required this.phone,
     required this.email,
-    required this.paymentTerms,  // List of payment terms
+    required this.loans,  // List of loans for the borrower
   });
 
   // Convert Borrower to Map for Firestore
@@ -22,7 +22,7 @@ class Borrower {
       'name': name,
       'phone': phone,
       'email': email,
-      'paymentTerms': paymentTerms.map((term) => term.toMap()).toList(),  // Convert to Map
+      'loans': loans.map((loan) => loan.toMap()).toList(),  // Convert loans to Map
     };
   }
 
@@ -33,8 +33,8 @@ class Borrower {
       name: map['name'],
       phone: map['phone'],
       email: map['email'],
-      paymentTerms: List<PaymentTerm>.from(
-        map['paymentTerms'].map((term) => PaymentTerm.fromMap(term))
+      loans: List<Loan>.from(
+        map['loans'].map((loan) => Loan.fromMap(loan))
       ),
     );
   }

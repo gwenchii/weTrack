@@ -19,7 +19,7 @@ import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
 import 'package:wetrack/screens/loan/createloan_page.dart';
 import 'package:wetrack/screens/loan/scanqr_page.dart';
-import 'package:wetrack/screens/loan/borrower_profile.dart';
+import 'package:wetrack/screens/loan/Profiles/borrower_profile.dart';
 import 'package:wetrack/screens/loan/loan_profile.dart';
 //profile
 import 'package:wetrack/screens/profile/contact_us.dart';
@@ -71,7 +71,7 @@ class AppRoutes {
     case signup:
       return MaterialPageRoute(builder: (_) => const SignupPage());
     case changePass:
-      return MaterialPageRoute(builder: (_) => const ChangePassword());
+      return MaterialPageRoute(builder: (_) => const ChangePasswordPage());
     case resetPass:
       return MaterialPageRoute(builder: (_) => const ResetPassword());
     case home:

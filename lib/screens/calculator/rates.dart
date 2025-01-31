@@ -5,7 +5,7 @@ import 'package:wetrack/screens/calculator/terms.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
-import 'package:wetrack/screens/profile/userprofile_page.dart';
+import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 
 class Rates extends StatefulWidget {
@@ -47,7 +47,7 @@ class _RatesState extends State<Rates> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CreateBorrowerPage()));
         break;
       case 4:
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
         break;
       default:
         break;
@@ -154,7 +154,7 @@ class _RatesState extends State<Rates> {
                     padding: EdgeInsets.only(right: 20.0),
                     child: Text(
                       'Clear',
-                      style: TextStyle(color: Color.fromARGB(255, 102, 102, 102), fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Color.fromARGB(255, 102, 102, 102), fontWeight: FontWeight.bold, fontSize: 25),
                     ),
                   ),
                 ),

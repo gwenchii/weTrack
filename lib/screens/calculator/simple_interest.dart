@@ -6,7 +6,7 @@ import 'package:wetrack/screens/calculator/terms.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
-import 'package:wetrack/screens/profile/userprofile_page.dart';
+import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 
 class SimpleInterestPage extends StatefulWidget {
@@ -53,7 +53,7 @@ class _SimpleInterestPageState extends State<SimpleInterestPage> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CreateBorrowerPage()));
         break;
       case 4:
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
         break;
       default:
         break;
@@ -136,7 +136,7 @@ class _SimpleInterestPageState extends State<SimpleInterestPage> {
         automaticallyImplyLeading: false,
         title: const Row(
           children: [
-            Expanded(child: Text('Payment Term Calculator', style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(child: Text('Payment Term Calculator', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
           ],
         ),
       ),

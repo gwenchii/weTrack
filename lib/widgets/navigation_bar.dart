@@ -32,7 +32,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Profile',
+          label: 'Settings',
         ),
       ],
       currentIndex: currentIndex,

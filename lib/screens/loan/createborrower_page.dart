@@ -1,12 +1,11 @@
-// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createloan_page.dart';
+import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart';
-import 'package:wetrack/screens/profile/userprofile_page.dart';
 import 'package:wetrack/screens/calculator/compound_interest.dart';
 
 class CreateBorrowerPage extends StatefulWidget {
@@ -90,6 +89,7 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Loan Profile Created Successfully')));
       } catch (e) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } else {
@@ -117,7 +117,7 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CreateBorrowerPage()));
         break;
       case 4:
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
         break;
       default:
         break;
@@ -131,7 +131,7 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
         automaticallyImplyLeading: false,
         title: const Row(
           children: [
-            Expanded(child: Text('Create New Loan', style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(child: Text('Create New Loan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(padding: EdgeInsets.only(right: 10), child: Icon(Icons.qr_code_scanner)),
