@@ -19,7 +19,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  int _selectedIndex = 4; // Settings Page is selected, assuming there are 6 items.
+  int _selectedIndex =
+      4; // Settings Page is selected, assuming there are 6 items.
 
   // Define a function to navigate to the screens
   void _onItemTapped(int index) {
@@ -66,23 +67,22 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80), // Adjust the height as needed
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            title: const Padding(
-              padding: EdgeInsets.only(top: 25.0), // Add top padding of 10px
-              child: Text(
-                'Settings',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25, // Adjust font size as needed
-                ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80), // Adjust the height as needed
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Padding(
+            padding: EdgeInsets.only(top: 25.0), // Add top padding of 10px
+            child: Text(
+              'Settings',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25, // Adjust font size as needed
               ),
             ),
           ),
         ),
-
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(20.0, 79.0, 20.0, 20.0),
         child: Column(
@@ -106,54 +106,65 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   // Profile
                   ListTile(
-                    title: const Text('Profile', style: TextStyle(fontSize: 16)),
+                    title:
+                        const Text('Profile', style: TextStyle(fontSize: 16)),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ProfilePage()),
+                        MaterialPageRoute(
+                            builder: (context) => const ProfilePage()),
                       );
                     },
                   ),
                   ListTile(
-                    title: const Text('Notifications', style: TextStyle(fontSize: 16)),
+                    title: const Text('Notifications',
+                        style: TextStyle(fontSize: 16)),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const NotificationPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const NotificationPage()),
                       );
                     },
                   ),
                   ListTile(
-                    title: const Text('Terms and Conditions', style: TextStyle(fontSize: 16)),
+                    title: const Text('Terms and Conditions',
+                        style: TextStyle(fontSize: 16)),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const TermnsandCondition()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const TermsAndConditionsPage()),
                       );
                     },
                   ),
                   ListTile(
-                    title: const Text('Privacy and Policy', style: TextStyle(fontSize: 16)),
+                    title: const Text('Privacy and Policy',
+                        style: TextStyle(fontSize: 16)),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const PrivacyPolicyPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const PrivacyPolicyPage()),
                       );
                     },
                   ),
                   ListTile(
-                    title: const Text('Contact Us', style: TextStyle(fontSize: 16)),
+                    title: const Text('Contact Us',
+                        style: TextStyle(fontSize: 16)),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ContactUsPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const ContactUsPage()),
                       );
                     },
                   ),
                   ListTile(
-                    title: const Text('Log Out', style: TextStyle(fontSize: 16, color: Colors.red)),
-                    onTap: () {
-                    },
+                    title: const Text('Log Out',
+                        style: TextStyle(fontSize: 16, color: Colors.red)),
+                    onTap: () {},
                   ),
                 ],
               ),
