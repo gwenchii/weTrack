@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
-import 'package:wetrack/screens/home/dashboard_page.dart'; // Import your actual screens here
+import 'package:wetrack/screens/home/dashboard_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,38 +65,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('weTrack', style: TextStyle(fontWeight: FontWeight.bold)),
+      ),
       body: Stack(
         children: [
-          // Background Gradient
-          Container(
-            width: double.infinity, // Takes up the entire width
-            height: double.infinity, // Takes up the entire height
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 255, 255, 255),
-                  Color.fromARGB(255, 147, 211, 129),
-                  Color.fromARGB(255, 82, 179, 98),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
-          // Overlay Content
           Padding(
             padding:
-                const EdgeInsets.symmetric(vertical: 70.0, horizontal: 25.0),
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 25.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Welcome User!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
-                ),
                 const SizedBox(height: 20), // Spacing
                 // Dashboard Preview Card
                 _buildPreviewCard(

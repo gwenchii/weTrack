@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';  // For Firestore Timestamp
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class PaymentTerm {
   String id;
   DateTime date;  // Date of the payment
@@ -23,7 +22,6 @@ class PaymentTerm {
     };
   }
 
-  // Create PaymentTerm from Firestore Map
   factory PaymentTerm.fromMap(Map<String, dynamic> map) {
     return PaymentTerm(
       id: map['id'],
@@ -31,5 +29,14 @@ class PaymentTerm {
       amount: map['amount'],
       isPaid: map['isPaid'] ?? false,  // Default to false if isPaid is not present
     );
+  }
+
+
+  String get paymentStatus => isPaid ? "Completed" : "Pending";
+
+
+  @override
+  String toString() {
+    return 'PaymentTerm(id: $id, date: $date, amount: Php $amount, isPaid: $paymentStatus)';
   }
 }

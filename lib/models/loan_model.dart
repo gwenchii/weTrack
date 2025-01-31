@@ -1,29 +1,28 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Loan {
-  String loanId;
-  String loanProvider;
-  String loanPurpose;
-  String paymentMethod;
-  double loanAmount;
-  double interest;
-  bool isPaid;
-  DateTime createdAt;
-  List<Map<String, dynamic>> terms; // List of terms with proof and payment status
+  final String loanId;
+  final String loanProvider;
+  final String loanPurpose;
+  final String paymentMethod;
+  final double loanAmount;
+  final double interest;
+  final bool isPaid;
+  final DateTime createdAt;
+  final List<Map<String, dynamic>> terms;
+  final double amountPaid; 
 
   Loan({
-    required this.loanId, // 'id' is required
+    required this.loanId,
     required this.loanProvider,
     required this.loanPurpose,
     required this.paymentMethod,
     required this.loanAmount,
     required this.interest,
-    required this.isPaid, // 'isPaid' is required
+    required this.isPaid,
     required this.createdAt,
     required this.terms,
+    required this.amountPaid, 
   });
 
-  // Convert Loan to Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'loanId': loanId,
@@ -33,29 +32,24 @@ class Loan {
       'loanAmount': loanAmount,
       'interest': interest,
       'isPaid': isPaid,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toIso8601String(),
       'terms': terms,
+      'amountPaid': amountPaid,  // Include it when serializing
     };
   }
 
-  // Create Loan from Firestore Map
-  factory Loan.fromMap(Map<String, dynamic> map, String loanId) {
+  factory Loan.fromMap(Map<String, dynamic> map) {
     return Loan(
-      loanId: loanId,
+      loanId: map['loanId'],
       loanProvider: map['loanProvider'],
       loanPurpose: map['loanPurpose'],
       paymentMethod: map['paymentMethod'],
       loanAmount: map['loanAmount'],
       interest: map['interest'],
       isPaid: map['isPaid'],
-      createdAt: (map['createdAt'] as Timestamp).toDate(),
+      createdAt: DateTime.parse(map['createdAt']),
       terms: List<Map<String, dynamic>>.from(map['terms']),
+      amountPaid: map['amountPaid'],
     );
-  }
-
-  // Update a term with proof of payment and mark it as paid
-  void addProofOfPayment(int index, String proofFileName) {
-    terms[index]["paid"] = true;
-    terms[index]["proofFile"] = proofFileName; // Store proof file name
   }
 }

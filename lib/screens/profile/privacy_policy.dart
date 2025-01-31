@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart'; // Import Dashboard
 import 'package:wetrack/screens/loan/createborrower_page.dart'; // Import Create Borrower
-import 'package:wetrack/screens/calculator/compound_interest.dart'; // Import Calculator
+// Import Calculator
 
 class PrivacyPolicyPage extends StatefulWidget {
   const PrivacyPolicyPage({super.key});
@@ -38,7 +39,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const CompoundInterestPage()),
+          MaterialPageRoute(builder: (context) => const SimpleInterestPage()),
         );
         break;
       case 3:
@@ -125,7 +126,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
                     "8. Changes to the Privacy Policy\n"
                     "We may update this Privacy Policy at any time. Any changes will be posted in the App or on our website, and the revised policy will become effective as soon as they are posted. Your continued use of the App after any changes to the Privacy Policy constitutes your acceptance of the new policy.",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       height: 2, // Line height for better readability
                     ),
                   ),

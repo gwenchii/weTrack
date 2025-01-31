@@ -109,7 +109,7 @@ class AppRoutes {
           return _errorRoute('Missing loan data');
         }
         return MaterialPageRoute(
-          builder: (_) => LoanProfilePage(loan: loan),
+          builder: (_) => LoanProfilePage(loan: loan, borrower: const {},),
         );
 
       case qrScan:

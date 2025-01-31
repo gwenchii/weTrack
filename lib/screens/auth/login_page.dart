@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import '../home/home_page.dart';
@@ -37,8 +39,7 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
       } on FirebaseAuthException catch (e) {
-        // Show error messages based on the Firebase exception
-        String errorMessage = "An error occurred. Please try again.";
+        String errorMessage = "You haven't Created your account yet.";
         if (e.code == 'user-not-found') {
           errorMessage = "No user found for that email.";
         } else if (e.code == 'wrong-password') {
@@ -50,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text("Login Error"),
+              title: const Text("No user found."),
               content: Text(errorMessage),
               actions: <Widget>[
                 TextButton(

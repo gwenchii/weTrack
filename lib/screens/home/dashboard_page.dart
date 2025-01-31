@@ -108,7 +108,7 @@ class _DashboardPageState extends State<DashboardPage> {
             return const Center(child: Text('No loans available.'));
           } else {
             List<Map<String, dynamic>> loanList = snapshot.data!;
-            return Padding(
+            return SingleChildScrollView(  // Wrap the content with SingleChildScrollView
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,39 +119,45 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   const SizedBox(height: 16),
                   ...loanList.map((loan) {
-                    return Container(
-                      width: double.infinity,
-                      height: 56,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            loan['loan_provider'] ?? 'Unknown',
-                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const Text(
-                                'Current Balance:',
-                                style: TextStyle(fontSize: 14, color: Colors.grey),
+                    return Padding(  // Add Padding to increase space between loan items
+                      padding: const EdgeInsets.only(bottom: 16),  // Adjust bottom space
+                      child: Container(
+                        width: double.infinity,
+                        height: 80,  // Increase height for better spacing
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Display loan provider or a default text
+                            Expanded(
+                              child: Text(
+                                loan['loan_provider'] ?? 'Unknown',
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '₱${loan['current_balance']}',
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Text(
+                                  'Current Balance:',
+                                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '₱${loan['current_balance'] ?? '0.00'}',  // Handle null or missing balance
+                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
-                  }),
+                  }),  // Ensure mapping to List
                 ],
               ),
             );

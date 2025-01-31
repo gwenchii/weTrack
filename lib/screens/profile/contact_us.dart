@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart'; // Import Dashboard
 import 'package:wetrack/screens/loan/createborrower_page.dart'; // Import Create Borrower
-import 'package:wetrack/screens/calculator/compound_interest.dart'; // Import Calculator
+// Import Calculator
 
 class ContactUsPage extends StatefulWidget {
   const ContactUsPage({super.key});
@@ -38,7 +39,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const CompoundInterestPage()),
+          MaterialPageRoute(builder: (context) => const SimpleInterestPage()),
         );
         break;
       case 3:
@@ -96,11 +97,23 @@ class _ContactUsPageState extends State<ContactUsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "If you have any questions or concerns about the Terms and Condition, Privacy Policy or our Data Practices, please contact us at:\n\n"
+                    "If you have any questions or concerns about the Terms and Conditions, Privacy Policy, or our Data Practices, please feel free to reach out to us at:\n\n"
                     "Email: wetrackapp@gmail.com\n"
-                    "Website: wetrack.com",
+                    "Website: wetrack.com\n\n"
+                    "We value your feedback and are here to assist you with any inquiries or support needs you may have.\n\n"
+                    "You can also reach us through the following channels:\n\n"
+                    "Phone: +63 (9999) 123-4565\n"
+                    "Customer Support: support@wetrack.com\n"
+                    "Business Inquiries: business@wetrack.com\n\n"
+                    "Follow us on our social media channels for updates:\n"
+                    "Facebook: facebook.com/wetrackapp\n"
+                    "Twitter: twitter.com/wetrackapp\n"
+                    "Instagram: instagram.com/wetrackapp\n\n"
+                    "Our office hours are Monday to Friday, 9:00 AM to 6:00 PM (EST). We strive to respond to all inquiries within 24 hours.\n\n"
+                    "\n\nWe look forward to hearing from you!\n",
+
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       height: 2, // Line height for better readability
                     ),
                   ),

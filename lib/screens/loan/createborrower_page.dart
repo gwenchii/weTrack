@@ -132,10 +132,6 @@ class _CreateBorrowerPageState extends State<CreateBorrowerPage> {
         title: const Row(
           children: [
             Expanded(child: Text('Create New Loan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(padding: EdgeInsets.only(right: 10), child: Icon(Icons.qr_code_scanner)),
-            ),
           ],
         ),
       ),

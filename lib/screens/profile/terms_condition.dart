@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/profile/settings.dart';
 import 'package:wetrack/widgets/navigation_bar.dart';
 import 'package:wetrack/screens/home/dashboard_page.dart'; // Import Dashboard
 import 'package:wetrack/screens/loan/createborrower_page.dart'; // Import Create Borrower
-import 'package:wetrack/screens/calculator/compound_interest.dart'; // Import Calculator
+// Import Calculator
 
 class TermsAndConditionsPage extends StatefulWidget {
   const TermsAndConditionsPage({super.key});
@@ -38,7 +39,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const CompoundInterestPage()),
+          MaterialPageRoute(builder: (context) => const SimpleInterestPage()),
         );
         break;
       case 3:
@@ -126,7 +127,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                     "10. Changes to the Terms\n"
                     "We may update these Terms at any time. Any changes will be posted in the App or on our website, and the revised terms will become effective as soon as they are posted. Your continued use of the App after any changes to the Terms constitutes your acceptance of the new Terms.",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       height: 2, // Line height for better readability
                     ),
                   ),
