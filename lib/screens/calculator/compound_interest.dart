@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/calculator/rates.dart';
 import 'package:wetrack/screens/calculator/terms.dart';
@@ -22,9 +23,6 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
   final _repaymentTermsController = TextEditingController();
   final _firstPaymentDateController = TextEditingController();
 
-  bool _isMonthly = true;
-  bool _isBiMonthly = false;
-
   double compoundInterest = 0.0;
   double totalAmount = 0.0;
   double monthlyPayment = 0.0;
@@ -32,6 +30,7 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
   List<Map<String, dynamic>> paymentSchedule = [];
 
   String _selectedCalculator = 'Compound Interest';
+  String _selectedFrequency = 'Monthly'; // New frequency variable
   int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
@@ -70,9 +69,28 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
       return;
     }
 
+    int compoundFrequency;
+
+    // Determine the compound frequency based on the dropdown selection
+    switch (_selectedFrequency) {
+      case 'Monthly':
+        compoundFrequency = 12;
+        break;
+      case 'Quarterly':
+        compoundFrequency = 4;
+        break;
+      case 'Semi-Annual':
+        compoundFrequency = 2;
+        break;
+      case 'Annually':
+        compoundFrequency = 1;
+        break;
+      default:
+        compoundFrequency = 12; // Default to Monthly
+    }
+
     // Compound Interest formula: A = P(1 + r/n)^(nt)
-    final compoundInterestAmount = initialAmount * (1 + (interestRate / 100)) * repaymentTerms;
-    compoundInterest = compoundInterestAmount - initialAmount;
+    final compoundInterestAmount = initialAmount * pow((1 + (interestRate / 100) / compoundFrequency), compoundFrequency * repaymentTerms);    compoundInterest = compoundInterestAmount - initialAmount;
     totalAmount = compoundInterestAmount;
 
     monthlyPayment = totalAmount / repaymentTerms;
@@ -137,7 +155,7 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
         automaticallyImplyLeading: false,
         title: const Row(
           children: [
-            Expanded(child: Text('Compound Interest Calculator', style: TextStyle(fontWeight: FontWeight.bold))),
+            Expanded(child: Text('Payment Term Calculator', style: TextStyle(fontWeight: FontWeight.bold))),
           ],
         ),
       ),
@@ -199,6 +217,39 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
                     ),
                   ],
                 ),
+                // Compound Frequency Dropdown
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Compound Frequency', style: TextStyle(color: Colors.black)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF69D685), // Green color
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      width: 150,
+                      height: 35,
+                      child: DropdownButton<String>(
+                        value: _selectedFrequency,
+                        items: const [
+                          DropdownMenuItem(value: 'Monthly', child: Text('Monthly')),
+                          DropdownMenuItem(value: 'Quarterly', child: Text('Quarterly')),
+                          DropdownMenuItem(value: 'Semi-Annual', child: Text('Semi-Annual')),
+                          DropdownMenuItem(value: 'Annually', child: Text('Annually')),
+                        ],
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedFrequency = newValue!;
+                          });
+                        },
+                        icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
+                        isExpanded: true,
+                        underline: const SizedBox(),
+                      ),
+                    ),
+                  ],
+                ),
                 // Other widgets for inputs, calculations, etc.
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -208,46 +259,6 @@ class _CompoundInterestPageState extends State<CompoundInterestPage> {
                   ),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ListTile(
-                              title: const Text(
-                                'Monthly',
-                                style: TextStyle(fontSize: 12, color: Colors.black),
-                              ),
-                              leading: Radio<bool>(
-                                value: true,
-                                groupValue: _isMonthly,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _isMonthly = value!;
-                                    _isBiMonthly = !value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListTile(
-                              title: const Text(
-                                'Bi-Monthly',
-                                style: TextStyle(fontSize: 12, color: Colors.black),
-                              ),
-                              leading: Radio<bool>(
-                                value: true,
-                                groupValue: _isBiMonthly,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _isBiMonthly = value!;
-                                    _isMonthly = !value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       TextField(
                         controller: _initialAmountController,
                         decoration: const InputDecoration(labelText: 'Initial Amount', labelStyle: TextStyle(color: Colors.black)),
