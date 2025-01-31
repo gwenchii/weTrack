@@ -43,7 +43,8 @@ class DeleteAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Delete Account', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Delete Account',
+            style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: Center(
         child: Container(
@@ -51,7 +52,7 @@ class DeleteAccountPage extends StatelessWidget {
           height: 150,
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: const Color(0xFFF6F0F0),
             borderRadius: BorderRadius.circular(10),
             boxShadow: const [
               BoxShadow(

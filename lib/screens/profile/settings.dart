@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wetrack/screens/auth/login_page.dart';
 import 'package:wetrack/screens/calculator/simple_interest.dart';
 import 'package:wetrack/screens/home/home_page.dart';
 import 'package:wetrack/screens/loan/createborrower_page.dart';
@@ -164,7 +165,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   ListTile(
                     title: const Text('Log Out',
                         style: TextStyle(fontSize: 16, color: Colors.red)),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                        (route) =>
+                            false, // Remove all routes until this condition is met
+                      );
+                    },
                   ),
                 ],
               ),

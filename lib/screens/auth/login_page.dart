@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import '../home/home_page.dart';
 import 'signup_page.dart';
 import 'package:wetrack/screens/auth/forgot_password.dart';
@@ -15,12 +16,54 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _handleLogin() {
+  // Firebase authentication instance
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Handle the login action
+  void _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      try {
+        // Sign in with Firebase
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        // Navigate to the HomePage if login is successful
+        if (userCredential.user != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        }
+      } on FirebaseAuthException catch (e) {
+        // Show error messages based on the Firebase exception
+        String errorMessage = "An error occurred. Please try again.";
+        if (e.code == 'user-not-found') {
+          errorMessage = "No user found for that email.";
+        } else if (e.code == 'wrong-password') {
+          errorMessage = "Incorrect password provided for that user.";
+        }
+
+        // Show an error dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Login Error"),
+              content: Text(errorMessage),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
@@ -88,7 +131,8 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ResetPassword()),
+                        MaterialPageRoute(
+                            builder: (context) => const ResetPassword()),
                       );
                     },
                     child: const Text('Forgot Password?'),
@@ -108,7 +152,8 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const SignupPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const SignupPage()),
                         );
                       },
                       child: const Text("Sign Up"),

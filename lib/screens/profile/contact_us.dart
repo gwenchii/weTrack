@@ -82,7 +82,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
             Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: const Color(0xFFF6F0F0),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: const [
                   BoxShadow(
