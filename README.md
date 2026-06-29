@@ -1,35 +1,41 @@
-# WeTrack 💰🔎
+# WeTrack 
+**Loan Management Mobile Application**
 
-*Loan Management App*
+🚧 **Status:** Work in Progress
 
-## 📄	Overview
+## Overview
 
-WeTrack is a user-friendly mobile application designed to simplify personal loan management for users as both lenders and borrowers. It allows users to track loan amounts, set terms, and monitor payment schedules effortlessly. With features like automated payment reminders, real-time payment tracking, and interest calculations, WeTrack ensures transparency and organization in financial dealings. Built for a diverse audience, including users with minimal tech experience, the app prioritizes ease of use and efficiency in managing loans.
+WeTrack is a group project developed as a university course requirement. The application is designed to help lenders and borrowers manage loans, monitor repayments, calculate interest, and organize payment schedules through a simple and user-friendly mobile interface.
 
-## 📍 Features
+## My Role
 
-📈 User Management  – Secure sign-up, login, and profile management
+* Proposed the project concept
+* Designed the complete UI/UX using **Figma**
+* Developed the front-end using **Flutter**
+* Collaborated with the team to integrate application features
 
-📈 Loan Tracking – Add, edit, and manage loans
+## Features
 
-📈 Payment Monitoring – Real-time tracking of payments and repayment schedules
+* User Authentication
+* Loan Management
+* Payment Tracking
+* Interest Calculator
+* Payment Reminders
 
-📈 Automated Reminders – Get notified of upcoming payments
+## Technologies
 
-📈 Interest Calculator – Calculation of loan interest & payment terms
+* Flutter
+* Dart
+* Figma
+* Firebase
 
-## 🗂️	Installation and Setup
+## Screenshots
 
-**Prerequisites:**
+<img width="1199" height="862" alt="image" src="https://github.com/user-attachments/assets/7aef5896-21ef-4aa9-94c3-ede7c207cf96" />
+<img width="1199" height="862" alt="image" src="https://github.com/user-attachments/assets/e6ba1b8a-ce91-4895-8cbd-7b1d8aeaab54" />
+<img width="1199" height="862" alt="image" src="https://github.com/user-attachments/assets/2d3ad360-d462-4c21-af18-7f5961f5297f" />
 
-🚩 Install [Flutter](https://docs.flutter.dev/get-started/install)
-
-🚩 Install [Android Studio](https://developer.android.com/studio) 
-
-## 📞 Contact Us!
-
-For more questions, reach out at wetrackapp@gmail.com
-
-
-
-
+## Prototype
+View the interactive prototype here: https://www.figma.com/proto/TzKB0nWtypPK1JNkJTEINo/WeTrack?node-id=0-1&t=hVO2sLtaLQwZjH1m-1
+## Note
+This project was developed collaboratively as part of a university course. My primary responsibilities were the project concept, UI/UX design, and front-end development.
